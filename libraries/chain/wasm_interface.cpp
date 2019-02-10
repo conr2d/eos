@@ -764,6 +764,11 @@ class crypto_api : public context_aware_api {
       void ripemd160(array_ptr<char> data, size_t datalen, fc::ripemd160& hash_val) {
          hash_val = encode<fc::ripemd160::encoder>( data, datalen );
       }
+
+      void decompress_key(array_ptr<char> data, size_t datalen, public_key_point_type& pubkey_point) {
+         auto pubkey = fc::raw::unpack<public_key_type>( data, datalen );
+         pubkey_point = public_key_point_type( pubkey );
+      }
 };
 
 class permission_api : public context_aware_api {
@@ -1753,6 +1758,7 @@ REGISTER_INTRINSICS(crypto_api,
    (sha256,                 void(int, int, int)           )
    (sha512,                 void(int, int, int)           )
    (ripemd160,              void(int, int, int)           )
+   (decompress_key,         void(int, int, int)           )
 );
 
 
